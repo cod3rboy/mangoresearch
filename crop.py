@@ -6,6 +6,7 @@ from PIL import JpegImagePlugin, Image
 # Get the path to current working directory
 working_dir = os.getcwd()
 
+
 # Get all file paths in current working directory
 file_paths = get_file_paths(working_dir, '.jpg')
 
