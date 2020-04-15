@@ -28,8 +28,13 @@ csv_file_output_path = os.path.join(working_dir, dataset, 'labeled_haar_dataset.
 
 # Generate Pandas DataFrame containing extracted features for each image file. 
 # If M features are extracted from N images then DataFrame will be of N x M dimension.
-# Columns of the data
-cols = list(['LL1', 'HL1', 'LL2', 'HL2', 'LL3', 'HL3', 'LL4', 'HL4', 'LL5', 'HL5', 'label'])
+## Generate Columns List for the data
+LEVEL = 5
+DECOMPOSITIONS = ['LL', 'LH', ]
+cols = [DECOMPOSITIONS[y] + str(x)
+        for x in range(1, LEVEL + 1)
+        for y in range(len(DECOMPOSITIONS))]
+cols.append("Label")
 
 # Create an empty dataframe with above columns
 data = pd.DataFrame(columns=cols)
@@ -37,7 +42,7 @@ row_list = list()
 # Extract image features of each image of each variety
 for label, path_list in image_dict.items():
     for image_path in path_list:
-        features = extract_haar_features(image_path, alternate_feature='hl')
+        features = extract_haar_features(image_path, level=LEVEL, decompositions=DECOMPOSITIONS)
         data_row = np.concatenate((features, [label]), axis=0)
         row_dict = dict()
         for i in range(len(cols)):
