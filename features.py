@@ -39,7 +39,7 @@ def extract_haar_features(image_path, decomposition_level=5, alternate_feature='
     # Obtain histograms for all decompositions
     decomposition_histograms = list()
     for decomposition in decomposition_list:
-        histogram, _ = np.histogram(np.ravel(decomposition), 256, (0, 255))
+        histogram, _ = np.histogram(np.ravel(decomposition), 256)
         decomposition_histograms.append(histogram)
 
     # Concatenate all histograms to get matrix of size n x 256 where n is no of extracted decompositions
