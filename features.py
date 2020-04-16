@@ -31,17 +31,13 @@ def extract_haar_features(image_path, level=5, decompositions=['LL']):
         LL, (LH, HL, HH) = pywt.dwt2(input, 'haar')
         for feature in decompositions:
             if   'll' == feature:
-                decomposition_list.append(MinMaxScaler(feature_range=(0, 255)).fit_transform(LL))
-                #decomposition_list.append(LL)
+                decomposition_list.append(LL)
             elif 'lh' == feature:
-                decomposition_list.append(MinMaxScaler(feature_range=(0, 255)).fit_transform(LH))
-                #decomposition_list.append(LH)
+                decomposition_list.append(LH)
             elif 'hl' == feature:
-                decomposition_list.append(MinMaxScaler(feature_range=(0, 255)).fit_transform(HL))
-                #decomposition_list.append(HL)
+                decomposition_list.append(HL)
             elif 'hh' == feature:
-                decomposition_list.append(MinMaxScaler(feature_range=(0, 255)).fit_transform(HH))
-                #decomposition_list.append(HH)
+                decomposition_list.append(HH)
         input = LL
     # Obtain histograms for all decompositions
     decomposition_histograms = list()
@@ -51,6 +47,9 @@ def extract_haar_features(image_path, level=5, decompositions=['LL']):
 
     # Concatenate all histograms to get matrix of size n x 256 where n is no of extracted decompositions
     concat_hist = np.stack(decomposition_histograms, axis=0)
+
+    # Apply MinMax Normalization on histograms matrix
+    concat_hist = MinMaxScaler().fit_transform(concat_hist)
 
     # Apply Principle Component Analysis (PCA) for dimensionality reduction of n x 256 histogram matrix into n x 1 feature vector
     pca = PCA(n_components=1)
