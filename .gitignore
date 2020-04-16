@@ -5,3 +5,5 @@ MangoLeavesDatabase/
 *.svm
 *.nb
 *.dt
+*.knn
+*.mlp
