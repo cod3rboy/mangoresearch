@@ -3,3 +3,5 @@ MangoLeavesDatabase/
 .idea/
 .ipynb_checkpoints/
 *.svm
+*.nb
+*.dt

@@ -30,7 +30,7 @@ csv_file_output_path = os.path.join(working_dir, dataset, 'labeled_haar_dataset.
 # If M features are extracted from N images then DataFrame will be of N x M dimension.
 ## Generate Columns List for the data
 LEVEL = 5
-DECOMPOSITIONS = ['LL', 'LH', ]
+DECOMPOSITIONS = ['LL', 'HL', 'LH']
 cols = [DECOMPOSITIONS[y] + str(x)
         for x in range(1, LEVEL + 1)
         for y in range(len(DECOMPOSITIONS))]

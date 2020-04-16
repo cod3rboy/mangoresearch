@@ -2,7 +2,7 @@ import numpy as np
 import pywt
 import cv2
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import normalize
+from sklearn.preprocessing import MinMaxScaler
 
 def extract_haar_features(image_path, level=5, decompositions=['LL']):
     """
@@ -31,13 +31,17 @@ def extract_haar_features(image_path, level=5, decompositions=['LL']):
         LL, (LH, HL, HH) = pywt.dwt2(input, 'haar')
         for feature in decompositions:
             if   'll' == feature:
-                decomposition_list.append(LL)
+                decomposition_list.append(MinMaxScaler(feature_range=(0, 255)).fit_transform(LL))
+                #decomposition_list.append(LL)
             elif 'lh' == feature:
-                decomposition_list.append(LH)
+                decomposition_list.append(MinMaxScaler(feature_range=(0, 255)).fit_transform(LH))
+                #decomposition_list.append(LH)
             elif 'hl' == feature:
-                decomposition_list.append(HL)
+                decomposition_list.append(MinMaxScaler(feature_range=(0, 255)).fit_transform(HL))
+                #decomposition_list.append(HL)
             elif 'hh' == feature:
-                decomposition_list.append(HH)
+                decomposition_list.append(MinMaxScaler(feature_range=(0, 255)).fit_transform(HH))
+                #decomposition_list.append(HH)
         input = LL
     # Obtain histograms for all decompositions
     decomposition_histograms = list()
