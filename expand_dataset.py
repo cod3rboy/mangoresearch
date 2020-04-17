@@ -1,14 +1,19 @@
 ## Python Script to expand dataset by enhancing existing images in dataset.
 
 import os
+import string
+import random
 from PIL import Image, ImageEnhance
 from utils import get_file_paths
 
 # Image Enhancemnet Parameters
-CONTRAST = 1.1 # 0 : No Contrast Gray Image and 1 : Original Image
-BRIGHTNESS = 1.3 # 0 : No Brightness and  > 1 : More Brightness
-SHARPNESS = 2.0 # 0 : Blurness , 1 : No Sharpness , > 1 : Sharp Image
+CONTRAST = 1.5 # 0 : No Contrast Gray Image and 1 : Original Image
+BRIGHTNESS = 1.5 # 0 : No Brightness and  > 1 : More Brightness
+SHARPNESS = 1.5 # 0 : Blurness , 1 : No Sharpness , > 1 : Sharp Image
 COLOR = 1.5 # 0 : No Color (Grayscale), 1 : Original Color , > 1 Saturated Color
+
+# Whether to save both original and enhanced images to output or just enhanced image.
+OUT_BOTH = False
 
 print("Getting directories paths ...")
 # Dataset and directories paths
@@ -39,23 +44,29 @@ for dir in directories:
         color = ImageEnhance.Color(sharp_bright_contrasted_img)
         colored_sharp_bright_contrasted_img = color.enhance(COLOR)
         img_file_name = os.path.basename(image_file)
-        filename, ext = img_file_name.split('.')
-        # Original Image file name for output
-        o_out_file_name = filename + "_0." + ext
-        # Enhanced Image file name for output
-        en_out_file_name = filename + "_1." + ext
+        _ , ext = img_file_name.split('.')
+        filename = dir_name
         # Output Path
         out_file_path = os.path.join(output_path, dir_name)
         if 'front' in img_file_name:
             out_file_path = os.path.join(out_file_path, 'front')
+            filename += '_front_'
         elif 'back' in img_file_name:
             out_file_path = os.path.join(out_file_path, 'back')
+            filename += '_back_'
         # Make output path in filesystem
         if not os.path.exists(out_file_path):
             os.makedirs(out_file_path, exist_ok=True)
+        # Original Image file name for output
+        o_filename = filename + ''.join(random.choices(string.ascii_lowercase + string.digits, k=24))
+        o_out_file_name = o_filename + "." + ext
+        # Enhanced Image file name for output
+        en_filename = filename + ''.join(random.choices(string.ascii_lowercase + string.digits, k=24))
+        en_out_file_name = en_filename + "." + ext
         # Save Enhanced Image
         colored_sharp_bright_contrasted_img.save(os.path.join(out_file_path, en_out_file_name))
-        # Save Original Image
-        img.save(os.path.join(out_file_path, o_out_file_name))
+        if OUT_BOTH:
+            # Save Original Image
+            img.save(os.path.join(out_file_path, o_out_file_name))
 
 print("Completed! Successfully enhanced dataset.")

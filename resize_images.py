@@ -18,7 +18,7 @@ for img_file in image_files:
     # Get original width and height
     w, h = img.size
     # Resize the image by applying REDUCE_SCALE in both dimensions
-    resized_img = img.resize((w // REDUCE_SCALE, h // REDUCE_SCALE), Image.NEAREST)
+    resized_img = img.resize((w // REDUCE_SCALE, h // REDUCE_SCALE), Image.ANTIALIAS)
     # Save resized image by overwriting original image.
     resized_img.save(img_file, 'JPEG')
 print("Resizing Completed!")
