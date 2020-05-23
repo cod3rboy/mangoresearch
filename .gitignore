@@ -1,6 +1,8 @@
 __pycache__/
 MangoLeavesDatabase/
+PreprocessedDatabase/
 .idea/
+.vscode/
 .ipynb_checkpoints/
 *.svm
 *.nb

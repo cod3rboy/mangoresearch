@@ -17,7 +17,7 @@ paths = {
     'amrapali': os.path.join(working_dir, dataset, 'amrapali'),
     'chausa': os.path.join(working_dir, dataset, 'chausa'),
     'dusheri': os.path.join(working_dir, dataset, 'dusheri'),
-    'langra': os.path.join(working_dir, dataset, 'langra'),
+    #'langra': os.path.join(working_dir, dataset, 'langra'),
 }
 # Generate a dictionary storing lists of image paths of a particular variety accessible using corresponding variety name. 
 image_dict = dict()
@@ -30,7 +30,7 @@ csv_file_output_path = os.path.join(working_dir, dataset, 'labeled_haar_dataset.
 # If M features are extracted from N images then DataFrame will be of N x M dimension.
 ## Generate Columns List for the data
 LEVEL = 5
-DECOMPOSITIONS = ['LL', 'HL', 'LH']
+DECOMPOSITIONS = ['LL', 'HL',]
 cols = [DECOMPOSITIONS[y] + str(x)
         for x in range(1, LEVEL + 1)
         for y in range(len(DECOMPOSITIONS))]
@@ -54,5 +54,5 @@ data = data.append(row_list, ignore_index=True)
 # Shuffle the rows of data before saving
 data = data.sample(frac=1).reset_index(drop=True)
 # Save data to CSV file
-data.to_csv(csv_file_output_path)
+data.to_csv(csv_file_output_path, index=False)
 print("Successfully generated CSV file at path " + csv_file_output_path)
