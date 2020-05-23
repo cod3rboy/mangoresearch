@@ -75,14 +75,21 @@ def extract_features(image_path):
     sobel_img = cv2.Sobel(leaf_portion,cv2.CV_64F,1,1,ksize=3)
     sobel_img = np.uint8(sobel_img)
     # Apply Morphological erosion on sobel image
-    kernel = np.ones((3,1), np.uint8)
-    erosion = cv2.morphologyEx(sobel_img, cv2.MORPH_ERODE, kernel)
+    kernel2 = np.ones((2,1), np.uint8)
+    kernel4 = np.ones((4,1), np.uint8)
+    erosion2 = cv2.morphologyEx(sobel_img, cv2.MORPH_ERODE, kernel2)
+    erosion4 = cv2.morphologyEx(sobel_img, cv2.MORPH_ERODE, kernel4)
     # Calculate ratio of no of non-black pixels to total no of leaf pixels
     non_black_pixels = 0
-    for intensity in erosion.flatten():
+    for intensity in erosion2.flatten():
         if intensity > 0:
             non_black_pixels += 1
-    vein_area_ratio = non_black_pixels / area
+    vein_area_ratio_1 = non_black_pixels / area
+    non_black_pixels = 0
+    for intensity in erosion4.flatten():
+        if intensity > 0:
+            non_black_pixels += 1
+    vein_area_ratio_2 = non_black_pixels / area
 
     # FEATURE - Elongation
     minor_axis = min(w,h)
@@ -90,14 +97,15 @@ def extract_features(image_path):
     elongation = 1 - (minor_axis / major_axis)
 
     # Create and return namedtuple containing extracted features
-    Feature = namedtuple('Feature', ['aspectratio', 'area', 'perimeter', 'formfactor', 'meancolor', 'veinarea', 'elongation'])
+    Feature = namedtuple('Feature', ['aspectratio', 'area', 'perimeter', 'formfactor', 'meancolor', 'veinarea1', 'veinarea2', 'elongation'])
     leaf_feature = Feature(
         aspectratio=aspectratio,
         area=area_ratio,
         perimeter=perimeter_ratio,
         formfactor=formfactor,
         meancolor=meancolor,
-        veinarea=vein_area_ratio,
+        veinarea1=vein_area_ratio_1,
+        veinarea2=vein_area_ratio_2,
         elongation=elongation)
     return leaf_feature
 
@@ -125,7 +133,7 @@ print("Start processing images ...")
 
 # Generate Pandas DataFrame containing extracted features for each image file. If M features are extracted from N images then DataFrame will be of N x M dimension.
 # Columns of the data
-cols = ['aspectratio', 'area', 'perimeter', 'formfactor', 'meanR', 'meanG', 'meanB', 'veinarea', 'elongation', 'label']
+cols = ['aspectratio', 'area', 'perimeter', 'formfactor', 'meanR', 'meanG', 'meanB', 'veinarea1', 'veinarea2', 'elongation', 'label']
 # Create an empty dataframe with above columns
 data = pd.DataFrame(columns=cols)
 # Extract image features of each image of each variety
@@ -143,10 +151,10 @@ for label, path_list in image_dict.items():
             cols[4]: features.meancolor[0],
             cols[5]: features.meancolor[1],
             cols[6]: features.meancolor[2],
-            cols[7]: features.veinarea,
-            #cols[8]: features.eccentricity,
-            cols[8]: features.elongation,
-            cols[9]: label,
+            cols[7]: features.veinarea1,
+            cols[8]: features.veinarea2,
+            cols[9]: features.elongation,
+            cols[10]: label,
         }, ignore_index=True)
         i += 1
         print(label + " : ", str(i)+"/"+str(total), " images processed")

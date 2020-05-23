@@ -9,3 +9,4 @@ PreprocessedDatabase/
 *.dt
 *.knn
 *.mlp
+*.rf
