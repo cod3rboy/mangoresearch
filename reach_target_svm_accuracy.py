@@ -62,7 +62,7 @@ target_accuracy = 0.85 # 82%
 # Export CSV file path
 export_csv_path = os.path.join(os.getcwd(), dataset_folder, 'labeled_dataset_max.csv')
 # Number of iterations
-iterations = 1000
+iterations = 500
 # Export csv when target accuracy reached
 export_csv = True
 max_accuracy = 0
@@ -77,7 +77,7 @@ for i in range(iterations):
     # Train and Test Support Vector Classifier
 
     # Train SVM Model using training data
-    svm_model = svm.SVC(kernel='poly',degree=8, C=1, decision_function_shape='ovo').fit(X_train, Y_train)
+    svm_model = svm.SVC(kernel='poly', degree=8, C=1, decision_function_shape='ovo').fit(X_train, Y_train)
     # Model predictions using test data
     svm_predictions = svm_model.predict(X_test) 
     # model accuracy for X_test   

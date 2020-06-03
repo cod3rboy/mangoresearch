@@ -64,9 +64,9 @@ def extract_features(image_path):
     # FEATURE - Mean Color
     # Crop rgb image using bounding rectangle of leaf contour to get leaf portion
     leaf_portion = rgb_image[y:y+h, x:x+w]
-    r_mean = int(np.mean(leaf_portion[: ,: ,0])) / 255
-    g_mean = int(np.mean(leaf_portion[: ,: ,1])) / 255
-    b_mean = int(np.mean(leaf_portion[: ,: ,2])) / 255
+    r_mean = np.mean(leaf_portion[: ,: ,0]) / 255
+    g_mean = np.mean(leaf_portion[: ,: ,1]) / 255
+    b_mean = np.mean(leaf_portion[: ,: ,2]) / 255
     meancolor = (r_mean, g_mean, b_mean)
     
     # FEATURE - Vein Area Ratio
