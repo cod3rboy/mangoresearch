@@ -65,6 +65,7 @@ export_csv_path = os.path.join(os.getcwd(), dataset_folder, 'labeled_dataset_max
 iterations = 500
 # Export csv when target accuracy reached
 export_csv = True
+# Initialization
 max_accuracy = 0
 train = None
 test = None

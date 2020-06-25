@@ -1,7 +1,9 @@
 __pycache__/
 MangoLeavesDatabase/
+EnhancedPreprocessedDatabase/
 PreprocessedDatabase/
 OriginalMangoLeavesDatabase/
+Paper/
 .idea/
 .vscode/
 .ipynb_checkpoints/

@@ -28,8 +28,7 @@ def remove_shadow_and_isolate(image_path, k):
     # Apply thresholding to clustered opening image
     cluster_img2gray = cv2.cvtColor(cluster_img, cv2.COLOR_RGB2GRAY)
     retval, th_img = cv2.threshold(cluster_img2gray, 0, 255, cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
-    # Isolate leaf portion in original image
-    img = np.bitwise_and(img2rgb, cv2.cvtColor(th_img, cv2.COLOR_GRAY2RGB))
+    
     return cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
 
